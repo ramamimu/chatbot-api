@@ -1,3 +1,5 @@
+# python version : 3.8.10
+
 import fastapi
 # 0.111.0
 print(fastapi.__version__)

@@ -22,12 +22,12 @@ async def lorem_generator():
   new_text = ""
   for i in splitted_lorem:
     new_text += f"{i} "
-    print(new_text)
+    # print(new_text)
     # yield f'{new_text}'
     yield f"{i} "
     await asyncio.sleep(0.1)
 
-@app.get("/ask")
+@app.get("/generate_stream")
 async def generate_stream():
   # solver: https://stackoverflow.com/questions/75740652/fastapi-streamingresponse-not-streaming-with-generator-function
   # docs: https://github.com/sysid/sse-starlette
