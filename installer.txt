@@ -1,0 +1,5 @@
+pip3 install fastapi
+pip3 install lorem-text
+pip3 install python-dotenv
+pip3 install requests
+pip3 install sse-starlette
