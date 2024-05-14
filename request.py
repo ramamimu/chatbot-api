@@ -14,7 +14,7 @@ def get_stream(url):
               print("triggered => ")
               yield line.decode('utf-8')
 
-url = f'{url}/ask'
+url = f'{url}/generate_stream'
 # url = 'https://jsonplaceholder.typicode.com/posts/1'
 for line in get_stream(url):
     print(line)
