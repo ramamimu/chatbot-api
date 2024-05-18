@@ -2,4 +2,3 @@ pip3 install fastapi==0.111.0
 pip3 install lorem-text==2.1
 pip3 install requests==2.31.0
 pip3 install sse-starlette==2.1.0
-
