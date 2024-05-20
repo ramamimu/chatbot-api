@@ -1,7 +1,6 @@
 import requests
-from config import PORT
 
-url = f"http://localhost:{PORT}"
+url = f"http://localhost:5000"
 
 # ping = requests.get(f'{url}/ping')
 # print(ping.text)
