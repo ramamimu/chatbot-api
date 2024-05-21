@@ -8,6 +8,16 @@ from sse_starlette.sse import EventSourceResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 
+from src.commons.types.questions_api_handler_type import PostQuestionStreamGeneratorType
+from src.server.endpoint_factory import EndpointFactory
+
+# services
+from src.services.generator.lorem_generator_service import LoremGeneratorService
+
+# endpoints
+import src.api.questions as questions
+import src.api.health_check as health_check
+
 # regular method is for accessing self variable
 # classmethod is able as alternative constructor
 # staticmethod is for accessing class which have no relation on instance class
@@ -15,6 +25,7 @@ from fastapi import FastAPI
 class Server:
   def __init__(self, port: int) -> None:
     self._app = FastAPI()
+    self._app.delete
     self.port = port
   
   def configure_middleware(self):
@@ -27,30 +38,11 @@ class Server:
     )
   
   def configure_endpoint(self):
-    self._app.get("/ping")(self.health_check)
-    self._app.get("/generate_stream")(self.generate_stream)
+    lorem_generator_service = LoremGeneratorService()
+
+    endpoint_factory = EndpointFactory(self._app)
+    endpoint_factory.routes_creator(questions.register(lorem_generator_service))
+    endpoint_factory.routes_creator(health_check.register())
 
   def run(self):
     uvicorn.run(self._app, host="0.0.0.0", port=self.port)
-
-  @staticmethod
-  def health_check():
-    return "pong"
-
-  async def generate_stream(self):
-    # solver: https://stackoverflow.com/questions/75740652/fastapi-streamingresponse-not-streaming-with-generator-function
-    # docs: https://github.com/sysid/sse-starlette
-    return EventSourceResponse(self.lorem_generator(), media_type='text/event-stream')
-
-  @staticmethod
-  async def lorem_generator():
-    randomizer = random.randint(1, 5)
-    lorem_text:str = lorem.paragraphs(randomizer)
-    splitted_lorem:List[str] = lorem_text.split(' ')
-    
-    new_text = ""
-    for i in splitted_lorem:
-      new_text += f"{i} "
-      yield f"{i} "
-      await asyncio.sleep(0.1)
-
