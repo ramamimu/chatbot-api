@@ -33,6 +33,7 @@ class Server:
   def run(self):
     uvicorn.run(self._app, host="0.0.0.0", port=self.port)
 
+  @staticmethod
   def health_check():
     return "pong"
 
@@ -41,6 +42,7 @@ class Server:
     # docs: https://github.com/sysid/sse-starlette
     return EventSourceResponse(self.lorem_generator(), media_type='text/event-stream')
 
+  @staticmethod
   async def lorem_generator():
     randomizer = random.randint(1, 5)
     lorem_text:str = lorem.paragraphs(randomizer)
