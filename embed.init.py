@@ -16,7 +16,7 @@ text_splitter = RecursiveCharacterTextSplitter(
 splitted_doc = text_splitter.split_documents(doc)
 
 # embed the splitted document using particular embedding model
-# cuda out of memory, GTX 1650 4 Gb, if the PC has a good specs, delete {'device': 'cpu'} for faster processing
+# cuda out of memory using GTX 1650 4 Gb. If the PC has a good specs, delete {'device': 'cpu'} for faster processing
 embedding_model = HuggingFaceEmbeddings(model_name=EMBED_MODEL_PATH, model_kwargs={'trust_remote_code': True, 'device': 'cpu'})
 embedded_doc = FAISS.from_documents(splitted_doc, embedding_model)
 

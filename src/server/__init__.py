@@ -1,14 +1,7 @@
 import uvicorn
-from lorem_text import lorem
-from typing import List
-import random
-from config import PORT
-import asyncio
-from sse_starlette.sse import EventSourceResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 
-from src.commons.types.questions_api_handler_type import PostQuestionStreamGeneratorType
 from src.server.endpoint_factory import EndpointFactory
 
 # services
@@ -18,6 +11,7 @@ from src.services.generator.lorem_generator_service import LoremGeneratorService
 import src.api.questions as questions
 import src.api.health_check as health_check
 
+# NOTES
 # regular method is for accessing self variable
 # classmethod is able as alternative constructor
 # staticmethod is for accessing class which have no relation on instance class
@@ -25,7 +19,6 @@ import src.api.health_check as health_check
 class Server:
   def __init__(self, port: int) -> None:
     self._app = FastAPI()
-    self._app.delete
     self.port = port
   
   def configure_middleware(self):
