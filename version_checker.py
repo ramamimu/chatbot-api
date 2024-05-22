@@ -36,3 +36,15 @@ print(sentence_transformers.__version__)
 import faiss
 # faiss cpu 1.8.0
 print(faiss.__version__)
+
+import alembic
+# 1.13.1
+print(alembic.__version__)
+
+import psycopg2
+# 160000
+print(psycopg2.__libpq_version__)
+
+import pytest
+# 8.2.1
+print(pytest.__version__)

@@ -1,0 +1,15 @@
+from sqlalchemy import Column, DateTime, Integer, String
+from sqlalchemy.sql import func
+from src.services.postgres.models import Base
+
+class Files(Base):
+  __tablename__ = "files"
+
+  id = Column(Integer, primary_key=True, autoincrement=True)
+  name = Column(String(100), unique=True, nullable=False)
+  path = Column(String(100), unique=True, nullable=False)
+  created = Column(DateTime, default=func.now())
+  last_modified = Column(DateTime, default=func.now(), onupdate=func.now())
+
+  def __repr__(self):
+    return f"id: {self.id}, name: {self.name}, name: {self.name}"

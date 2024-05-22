@@ -10,7 +10,7 @@
   source venv/bin/activate
   ```
 
-- Install packages
+- install packages
 
   Highly recommend to install package manually as put in `installer.txt`
 
@@ -21,6 +21,22 @@
   ```
 
 - create `.env` such `example.env` file
+
+- setup database
+
+  setup the database as put in `.env` file. then create database name `chatbot`
+
+  ```
+  CREATE DATABASE chatbot
+  ```
+
+  or you can simply use docker compose of postgres in `compose/postgres.yaml`
+
+- Apply the Alembic migrations
+
+  ```
+  make migrate-checkout head
+  ```
 
 - run the app
 
