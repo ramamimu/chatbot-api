@@ -2,3 +2,15 @@ pip3 install fastapi==0.111.0
 pip3 install lorem-text==2.1
 pip3 install requests==2.31.0
 pip3 install sse-starlette==2.1.0
+pip3 install huggingface_hub==0.23.1
+pip3 install langchain-community==0.2.0
+pip3 install pypdf==4.2.0
+pip3 install sentence-transformers==2.7.0
+
+
+INSTALLATION WITH IF
+
+> NOTE: if having proper GPU memory and has setup CUDA compiler, use faiss-gpu instead
+pip3 install faiss-cpu==1.8.0
+or
+pip3 install faiss-gpu
