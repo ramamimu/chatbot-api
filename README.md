@@ -12,13 +12,13 @@ source venv/bin/activate
 
 - Install packages
 
-Highly recommended to install package manually as put in `installer.txt`
+  Highly recommend to install package manually as put in `installer.txt`
 
-or
+  or
 
-```
-pip3 install -r requirements.txt
-```
+  ```
+  pip3 install -r requirements.txt
+  ```
 
 - create `.env` such `example.env` file
 
@@ -54,6 +54,6 @@ exposing `port 8000` as default
 
 Documentation able to see on `url/docs`. It is generated automatically by fastapi. It also provides API playground.
 
-## useful link preferences
+## useful link references
 
 - stream communication: https://github.com/sysid/sse-starlette
