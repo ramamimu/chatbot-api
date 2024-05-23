@@ -3,10 +3,11 @@ from fastapi import File, UploadFile, Form
 from src.commons.types.files_api_handler_type import PutEmbedFilesType
 
 class FilesHandler:
-  def __init__(self, file_storage_service, files_db_service, embedding_service):
+  def __init__(self, file_storage_service, files_db_service, embedding_service, vectorstore_service):
     self._file_storage_service = file_storage_service
     self._files_db_service = files_db_service
     self._embedding_service = embedding_service
+    self._vectorstore_service = vectorstore_service
 
   async def put_embed_files_handler(self, name: str = Form(...), file: UploadFile = File(...)):
     """
@@ -32,5 +33,6 @@ class FilesHandler:
     splitted_document = self._embedding_service.split_document(f"{full_path}/{file.filename}")
     embedded_document = self._embedding_service.embed_document(splitted_document)
     self._embedding_service.save_local_embedded_document(embedded_document, full_path)
+    self._vectorstore_service.add_vectostore(full_path)
     
-    return "success"
+    return {"status":"success"}

@@ -40,7 +40,7 @@ class PostgresDb:
       if db_uri == "":
           db_uri = DB_URI
       
-      self._db = sqlalchemy.create_engine(db_uri)
+      self._db = sqlalchemy.create_engine(db_uri, echo=True)
       self._session = sessionmaker(bind=self._db)
       self._initialized = True
 
@@ -56,3 +56,6 @@ class PostgresDb:
     finally:
       session.close()
 
+  def get_session(self):
+      """Get a new database session."""
+      return self._session()

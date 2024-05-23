@@ -1,19 +1,18 @@
 from typing import List
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.documents import Document
-from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import PyPDFLoader
 
 from config import EMBED_MODEL_PATH
 
 class EmbeddingService:
-  def __init__(self) -> None:
+  def __init__(self, embedding_model) -> None:
     self._splitter = RecursiveCharacterTextSplitter(
       chunk_size = 1000,
       chunk_overlap = 200,
     )
-    self._embedding_model = HuggingFaceEmbeddings(model_name=EMBED_MODEL_PATH, model_kwargs={'trust_remote_code': True})
+    self._embedding_model = embedding_model
   
   def split_document(self, path: str) -> List[Document]:
     document = PyPDFLoader(path).load()

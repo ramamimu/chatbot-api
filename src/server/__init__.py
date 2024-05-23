@@ -1,8 +1,9 @@
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
+from langchain_community.embeddings import HuggingFaceEmbeddings
 
-from config import DB_URI_TEST
+from config import DB_URI_TEST, EMBED_MODEL_PATH
 from src.server.endpoint_factory import EndpointFactory
 
 # services
@@ -11,6 +12,7 @@ from src.services.storage.files_storage_service import FileStorageService
 from src.services.postgres.files_db_service import FilesDbService
 from src.services.postgres import PostgresDb
 from src.services.rag.embedding_service import EmbeddingService
+from src.services.rag.vectorstore_service import VectorstoreService
 
 # endpoints
 import src.api.questions as questions_endpoint
@@ -38,17 +40,24 @@ class Server:
     )
   
   def configure_endpoint(self):
-    db = PostgresDb(db_uri=DB_URI_TEST) if self._is_test_mode else PostgresDb()
+    db = PostgresDb()
+    embedding_model = HuggingFaceEmbeddings(model_name=EMBED_MODEL_PATH, model_kwargs={'trust_remote_code': True})
 
+    # service initiation
     lorem_generator_service = LoremGeneratorService()
     file_storage_service = FileStorageService()
     files_db_service = FilesDbService(db)
-    embedding_service = EmbeddingService()
+    embedding_service = EmbeddingService(embedding_model)
+    vectorstore_service = VectorstoreService(embedding_model, files_db_service)
 
+    # service builder
+    vectorstore_service.load_all_local_embedding()
+
+    # routes initiation
     endpoint_factory = EndpointFactory(self._app)
     endpoint_factory.routes_creator(health_check_endpoint.register())
     endpoint_factory.routes_creator(questions_endpoint.register(lorem_generator_service))
-    endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service, embedding_service))
+    endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service, embedding_service, vectorstore_service))
 
   def run(self):
     uvicorn.run(self._app, host="0.0.0.0", port=self.port)
