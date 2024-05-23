@@ -9,6 +9,9 @@ pip3 install sentence-transformers==2.7.0
 pip3 install alembic==1.13.1
 pip3 install psycopg2-binary
 pip3 install pytest==8.2.1
+pip3 install pytest_cov==5.0.0
+pip3 install aiofiles==23.2.1
+pip3 install asyncpg==0.29.0
 
 INSTALLATION WITH IF
 

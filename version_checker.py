@@ -1,5 +1,6 @@
 # python version : 3.8.10
 # running on Ubuntu 20.04
+# specs: memory 16Gb, GTX 1650 4Gb
 
 import fastapi
 # 0.111.0
@@ -42,9 +43,25 @@ import alembic
 print(alembic.__version__)
 
 import psycopg2
-# 160000
+# 160000 
+# I thought it is not a version
 print(psycopg2.__libpq_version__)
 
 import pytest
 # 8.2.1
 print(pytest.__version__)
+
+import pytest_cov
+# 5.0.0
+print(pytest_cov.__version__)
+
+import pytest_asyncio
+# 0.23.7
+print(pytest_asyncio.__version__)
+
+# checking by pip3 show aiofiles
+# aiofiles 23.2.1
+
+import asyncpg
+# 0.29.0
+print(asyncpg.__version__)

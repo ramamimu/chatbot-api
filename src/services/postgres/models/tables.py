@@ -6,10 +6,11 @@ class Files(Base):
   __tablename__ = "files"
 
   id = Column(Integer, primary_key=True, autoincrement=True)
-  name = Column(String(100), unique=True, nullable=False)
+  custom_name = Column(String(100), unique=True, nullable=False)
+  file_name = Column(String(100), unique=False, nullable=False)
   path = Column(String(100), unique=True, nullable=False)
   created = Column(DateTime, default=func.now())
   last_modified = Column(DateTime, default=func.now(), onupdate=func.now())
 
   def __repr__(self):
-    return f"id: {self.id}, name: {self.name}, name: {self.name}"
+    return f"id: {self.id}, name: {self.custom_name}, file name: {self.file_name}, path: {self.path}"

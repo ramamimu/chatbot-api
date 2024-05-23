@@ -7,6 +7,6 @@ def routes(handler) -> List[HandlerRequestType]:
     HandlerRequestType(
         method=Method.POST.value,
         path="/questions/stream-generator",
-        handler=handler.post_question_stream_generator
+        handler=handler.post_question_stream_generator_handler
     )
   ]

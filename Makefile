@@ -31,5 +31,14 @@ db-up:
 db-down:
 	docker compose -f ./compose/postgres.yaml up -d
 
-start:
+docker-start:
 	docker compose up -d
+
+start:
+	python3 app.py
+
+start-test:
+	python3 app.py test
+
+start-deploy:
+	fastapi run app.py

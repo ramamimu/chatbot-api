@@ -2,14 +2,19 @@ import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 
+from config import DB_URI_TEST
 from src.server.endpoint_factory import EndpointFactory
 
 # services
 from src.services.generator.lorem_generator_service import LoremGeneratorService
+from src.services.storage.files_storage_service import FileStorageService
+from src.services.postgres.files_db_service import FilesDbService
+from src.services.postgres import PostgresDb
 
 # endpoints
-import src.api.questions as questions
-import src.api.health_check as health_check
+import src.api.questions as questions_endpoint
+import src.api.health_check as health_check_endpoint
+import src.api.files as files_endpoint
 
 # NOTES
 # regular method is for accessing self variable
@@ -17,9 +22,10 @@ import src.api.health_check as health_check
 # staticmethod is for accessing class which have no relation on instance class
 
 class Server:
-  def __init__(self, port: int) -> None:
+  def __init__(self, port: int, is_test_mode: bool) -> None:
     self._app = FastAPI()
     self.port = port
+    self._is_test_mode = is_test_mode
   
   def configure_middleware(self):
     self._app.add_middleware(
@@ -31,11 +37,16 @@ class Server:
     )
   
   def configure_endpoint(self):
+    db = PostgresDb(db_uri=DB_URI_TEST) if self._is_test_mode else PostgresDb()
+
     lorem_generator_service = LoremGeneratorService()
+    file_storage_service = FileStorageService()
+    files_db_service = FilesDbService(db)
 
     endpoint_factory = EndpointFactory(self._app)
-    endpoint_factory.routes_creator(questions.register(lorem_generator_service))
-    endpoint_factory.routes_creator(health_check.register())
+    endpoint_factory.routes_creator(health_check_endpoint.register())
+    endpoint_factory.routes_creator(questions_endpoint.register(lorem_generator_service))
+    endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service))
 
   def run(self):
     uvicorn.run(self._app, host="0.0.0.0", port=self.port)

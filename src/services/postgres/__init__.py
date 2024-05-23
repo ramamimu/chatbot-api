@@ -28,18 +28,21 @@ class PostgresDb:
       with cls._lock:
           if cls._instance is None:
               cls._instance = super().__new__(cls)
-              db_uri = DB_URI
-              # for testing purpose
-              if kwargs['db_uri'] != None:
-                 db_uri = kwargs['db_uri']
-              cls._instance._db = sqlalchemy.create_engine(db_uri)
-              cls._instance._session = sessionmaker(bind=cls._instance._db)
+              cls._instance._initialized = False
       return cls._instance
-  
-  def change_connection(self, DB_URI):
-    self._instance._db = sqlalchemy.create_engine(DB_URI)
-    self._instance._session = sessionmaker(bind=self._instance._db)
 
+  def __init__(self, db_uri=""):
+      if self._initialized:
+          return
+
+      print("Arguments passed to __init__ DB: ", db_uri)
+
+      if db_uri == "":
+          db_uri = DB_URI
+      
+      self._db = sqlalchemy.create_engine(db_uri)
+      self._session = sessionmaker(bind=self._db)
+      self._initialized = True
 
   def transaction(self, fn):
     session = self._session()
