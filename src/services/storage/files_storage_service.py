@@ -1,8 +1,10 @@
 import os
 import aiofiles
 
+from config import DOCUMENT_PATH
+
 class FileStorageService:
-  _relative_path = "src/commons/documents/"
+  _relative_path = DOCUMENT_PATH
 
   def __init__(self) -> None:
     pass

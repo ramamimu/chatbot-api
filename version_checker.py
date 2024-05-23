@@ -65,3 +65,7 @@ print(pytest_asyncio.__version__)
 import asyncpg
 # 0.29.0
 print(asyncpg.__version__)
+
+import langchain_community
+# 0.2.0
+print(langchain_community.__version__)

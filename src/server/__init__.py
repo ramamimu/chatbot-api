@@ -10,6 +10,7 @@ from src.services.generator.lorem_generator_service import LoremGeneratorService
 from src.services.storage.files_storage_service import FileStorageService
 from src.services.postgres.files_db_service import FilesDbService
 from src.services.postgres import PostgresDb
+from src.services.rag.embedding_service import EmbeddingService
 
 # endpoints
 import src.api.questions as questions_endpoint
@@ -42,11 +43,12 @@ class Server:
     lorem_generator_service = LoremGeneratorService()
     file_storage_service = FileStorageService()
     files_db_service = FilesDbService(db)
+    embedding_service = EmbeddingService()
 
     endpoint_factory = EndpointFactory(self._app)
     endpoint_factory.routes_creator(health_check_endpoint.register())
     endpoint_factory.routes_creator(questions_endpoint.register(lorem_generator_service))
-    endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service))
+    endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service, embedding_service))
 
   def run(self):
     uvicorn.run(self._app, host="0.0.0.0", port=self.port)

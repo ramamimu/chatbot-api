@@ -49,7 +49,6 @@ class PostgresDb:
     try:
       fn(session)
       session.commit()
-      print("Data transaction successfully")
     except Exception as e:
       session.rollback()
       print(f"Error transaction: {e}")
