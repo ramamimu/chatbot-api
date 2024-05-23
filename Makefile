@@ -38,6 +38,7 @@ start:
 	python3 app.py
 
 start-test:
+	alembic upgrade head
 	python3 app.py test
 
 start-deploy:

@@ -26,6 +26,6 @@ class FilesHandler:
     8. update chain
     """
     full_path:str = await self._file_storage_service.save_file_to_folder(name, file)
-    # self._files_db_service.add_file(name, file.filename, full_path)
+    self._files_db_service.add_file(name, file.filename, full_path)
     
     return "success"

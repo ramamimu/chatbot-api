@@ -1,0 +1,8 @@
+SUCCESS:
+1. status code created
+2. status code 200
+
+
+ERROR:
+1. DETAIL:  Key (path)=(src/commons/documents/hello world) already exists.
+2. FileExistsError: Folder 'src/commons/documents/hello world' already exists
