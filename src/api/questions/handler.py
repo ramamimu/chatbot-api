@@ -11,7 +11,8 @@ class QuestionsHandler:
     return await self._lorem_generator_service.generate_lorem()
   
   async def post_question_stream_handler(self, payload: PostQuestionStreamGeneratorType):
-    return EventSourceResponse(self._chain_streamer(payload.question, payload.id), media_type='text/event-stream')
+    question = f"{payload.question}. Jawab menggunakan Bahasa Indonesia!" if payload.is_bahasa else f"{payload.question}. please answer in English!" 
+    return EventSourceResponse(self._chain_streamer(question, payload.id), media_type='text/event-stream')
 
   async def _chain_streamer(self, question, id):
     async for chunk in self._chain_service.get_chain().astream(question):

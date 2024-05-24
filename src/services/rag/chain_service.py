@@ -26,10 +26,10 @@ class ChainService:
     )
 
   def _init_prompt(self):
-    template = """Answer the question based only on the following context:
-    {context}
+    template = """SYSTEM: Anda adalah chatbot interaktif bernama TANYABOT untuk menjawab pertanyaan seputar mahasiswa Teknik Informatika ITS. Kamu bisa mengambil potongan konteks yang diambil berikut ini untuk menjawab pertanyaan tidak apa untuk bilang tidak tahu. Buatlah jawaban yang ringkas.
+      CONTEXT: {context}
 
-    Question: {question}
+      Question: {question}
     """
 
     prompt = ChatPromptTemplate.from_template(template)

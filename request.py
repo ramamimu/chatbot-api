@@ -33,10 +33,11 @@ def post_stream_generator():
         data_rcv += line[6:]
         print(f"{data_rcv}\n")
 
-def post_questions(question):
+def post_questions(question, is_bahasa=True):
     payload = {
         'id': "1",
-        'question': question
+        'question': question,
+        'is_bahasa': is_bahasa
     }
 
     headers = {
@@ -61,4 +62,6 @@ def post_questions(question):
 
 # get_ping()
 # post_stream_generator()
-post_questions("bagaimana Pengambilan MK non-Konversi di semester yang sama dengan pengambilan MK Konversi? jawab bahasa indonesia")
+# post_questions("bagaimana Pengambilan MK non-Konversi di semester yang sama dengan pengambilan MK Konversi? jawab bahasa indonesia")
+# post_questions("who are you?", is_bahasa=False)
+post_questions("who are you?", is_bahasa=True)
