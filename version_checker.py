@@ -67,5 +67,12 @@ import asyncpg
 print(asyncpg.__version__)
 
 import langchain_community
-# 0.2.0
+# 0.2.1
 print(langchain_community.__version__)
+
+import openai
+# 1.30.2
+print(openai.__version__)
+
+# checking by pip3 show langchain_openai
+# langchain_openai 0.1.7

@@ -3,7 +3,6 @@ from langchain_community.vectorstores import FAISS
 import os
 
 from config import BASE_KNOWLEDGE_DOCUMENT_PATH
-from src.services.postgres.models.tables import Files
 
 class VectorstoreService:
   def __init__(self, embedding_model, files_db_service) -> None:
@@ -11,6 +10,17 @@ class VectorstoreService:
     self._vectorstore = FAISS.load_local(folder_path=f"{BASE_KNOWLEDGE_DOCUMENT_PATH}/embedding", embeddings=self._embedding_model, allow_dangerous_deserialization=True)
     self._files_db_service = files_db_service
 
+  def get_retriever(self):
+    retriever = self._vectorstore.as_retriever(search_kwargs={"k": 1})
+    if retriever is None:
+        raise ValueError("Vectorstore as retriever returned None, expected a valid retriever.")
+    return retriever
+
+  def get_vectorstore(self):
+    if self._vectorstore is None:
+        raise ValueError("Vectorstore is None, expected a valid vectorstore instance.")
+    return self._vectorstore
+  
   def load_all_local_embedding(self):
     files = self._files_db_service.get_all_file()
     for file in files:
@@ -23,3 +33,7 @@ class VectorstoreService:
       self._vectorstore.merge_from(local_vectorstore)
     else:
       self._files_db_service.delete_file_by_id(path)
+  
+  def similarity_search(self, question):
+    ss = self._vectorstore.similarity_search(question, k=1)
+    return ss

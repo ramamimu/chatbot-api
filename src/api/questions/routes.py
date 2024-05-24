@@ -8,5 +8,10 @@ def routes(handler) -> List[HandlerRequestType]:
         method=Method.POST.value,
         path="/questions/stream-generator",
         handler=handler.post_question_stream_generator_handler
+    ),
+    HandlerRequestType(
+      method=Method.POST.value,
+      path="/questions",
+      handler=handler.post_question_stream_handler
     )
   ]

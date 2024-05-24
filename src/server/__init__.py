@@ -13,6 +13,7 @@ from src.services.postgres.files_db_service import FilesDbService
 from src.services.postgres import PostgresDb
 from src.services.rag.embedding_service import EmbeddingService
 from src.services.rag.vectorstore_service import VectorstoreService
+from src.services.rag.chain_service import ChainService
 
 # endpoints
 import src.api.questions as questions_endpoint
@@ -49,6 +50,7 @@ class Server:
     files_db_service = FilesDbService(db)
     embedding_service = EmbeddingService(embedding_model)
     vectorstore_service = VectorstoreService(embedding_model, files_db_service)
+    chain_service = ChainService(files_db_service, vectorstore_service)
 
     # service builder
     vectorstore_service.load_all_local_embedding()
@@ -56,7 +58,7 @@ class Server:
     # routes initiation
     endpoint_factory = EndpointFactory(self._app)
     endpoint_factory.routes_creator(health_check_endpoint.register())
-    endpoint_factory.routes_creator(questions_endpoint.register(lorem_generator_service))
+    endpoint_factory.routes_creator(questions_endpoint.register(lorem_generator_service, chain_service))
     endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service, embedding_service, vectorstore_service))
 
   def run(self):

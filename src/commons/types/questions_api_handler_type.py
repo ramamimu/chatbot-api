@@ -1,5 +1,6 @@
+from typing import Optional
 from pydantic import BaseModel
 
 class PostQuestionStreamGeneratorType(BaseModel):
-  id: str
+  id: Optional[str] = None
   question: str

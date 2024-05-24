@@ -25,7 +25,7 @@ class FilesHandler:
     
     7. update vectorstore
     
-    8. update chain
+    8. update chain (tested does chain still need to update)
     """
     
     full_path:str = await self._file_storage_service.save_file_to_folder(name, file)

@@ -12,7 +12,9 @@ pip3 install pytest==8.2.1
 pip3 install pytest_cov==5.0.0
 pip3 install aiofiles==23.2.1
 pip3 install asyncpg==0.29.0
-pip3 install langchain_community==0.2.0
+pip3 install langchain_community==0.2.1
+pip3 install openai==1.30.2
+pip3 install langchain-openai==0.1.7
 
 INSTALLATION WITH IF
 
