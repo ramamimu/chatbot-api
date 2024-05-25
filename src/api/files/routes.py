@@ -10,13 +10,18 @@ def routes(handler) -> HandlerRequestType:
       handler=handler.put_embed_files_handler
     ),
     HandlerRequestType(
+      method=Method.GET.value,
+      path="/files",
+      handler=handler.get_files_handler
+    ),
+    HandlerRequestType(
       method=Method.DELETE.value,
       path="/files/knowledge",
       handler=handler.delete_file_knowledge_handler
     ),
     HandlerRequestType(
       method=Method.GET.value,
-      path="/files",
-      handler=handler.get_files_handler
+      path="/files/download/{file_id}",
+      handler=handler.get_files_download_by_id_handler
     )
   ]

@@ -17,12 +17,32 @@ class FilesDbService:
     finally:
       session.close()
   
+  def get_file_by_id(self, id):
+    session = self._db.get_session()
+    try:
+      files = session.query(Files).filter(Files.id == id)
+      file = files[0]
+      return file
+    finally:
+      session.close()
+
   def delete_file_by_id(self, id):
     self._db.transaction(lambda session: session.query(Files).filter(Files.id == id).delete())
 
   def delete_file_by_path(self, path):
     self._db.transaction(lambda session: session.query(Files).filter(Files.path == path).delete())
   
+  def verify_file_by_id(self, id):
+    session = self._db.get_session()
+    try:
+      files = session.query(Files).filter(Files.id == id)
+      file = files[0]
+      return file
+    except Exception as e:
+      raise Exception(e)
+    finally:
+      session.close()
+
   def verify_file_by_id_name(self, id, name):
     session = self._db.get_session()
     try:

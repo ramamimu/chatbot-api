@@ -40,3 +40,7 @@ class FileStorageService:
         shutil.rmtree(full_path)
     else:
         raise FileNotFoundError(f"Folder '{full_path}' does not exist") 
+    
+  def verify_path(self, full_path):
+     if not os.path.exists(full_path):
+        raise FileNotFoundError(f"file '{full_path}' does not exist") 

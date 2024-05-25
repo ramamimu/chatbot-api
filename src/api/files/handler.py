@@ -1,5 +1,6 @@
 from typing import List
 from fastapi import File, UploadFile, Form
+from fastapi.responses import FileResponse
 
 from src.commons.entities.files_db_entity import files_db_entity
 from src.commons.types.files_api_handler_type import DeleteFileKnowledgeType
@@ -69,3 +70,15 @@ class FilesHandler:
       "status": "success",
       "files": files_db_entity(files)
     }
+
+  async def get_files_download_by_id_handler(self, file_id):
+    '''
+    1. verify id in db return file if available
+    2. verify path existence in directory
+    '''
+    
+    file = self._files_db_service.verify_file_by_id(file_id)
+    self._file_storage_service.verify_path(f"{file.path}/{file.file_name}")
+    return FileResponse(f"{file.path}/{file.file_name}", media_type='application/octet-stream', filename=file.file_name)
+    
+    
