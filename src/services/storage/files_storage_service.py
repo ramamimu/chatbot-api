@@ -1,5 +1,6 @@
 import os
 import aiofiles
+import shutil
 
 from config import DOCUMENT_PATH
 
@@ -31,3 +32,11 @@ class FileStorageService:
         await f.write(await file.read())
     
     return full_path
+  
+  def delete_directory(self, full_path):
+    # Check if the directory exists
+    if os.path.exists(full_path) and os.path.isdir(full_path):
+        # Remove the directory and its contents
+        shutil.rmtree(full_path)
+    else:
+        raise FileNotFoundError(f"Folder '{full_path}' does not exist") 

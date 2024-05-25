@@ -27,7 +27,17 @@ class FilesDbService:
     session = self._db.get_session()
     try:
       files = session.query(Files).filter(and_(Files.id == id, Files.custom_name == name))
-      return files[0].file_name
+      return files[0]
+    except Exception as e:
+      raise Exception(e)
+    finally:
+      session.close()
+  
+  def get_all_files(self):
+    session = self._db.get_session()
+    try:
+      files = session.query(Files).all()
+      return files
     except Exception as e:
       raise Exception(e)
     finally:

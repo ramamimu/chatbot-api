@@ -37,7 +37,7 @@ def post_questions(question, is_bahasa=True):
     payload = {
         'id': "1",
         'question': question,
-        'is_bahasa': is_bahasa
+        'isBahasa': is_bahasa
     }
 
     headers = {

@@ -39,16 +39,16 @@ class VectorstoreService:
     return ss
   
   def get_chunks_by_filename(self, filename: str):
-    vector_dict = self._vectorstore.docstore.__dict__
-    chunks = []
+    vector_dict = self._vectorstore.docstore._dict
+    chunks_id = []
 
-    for i in vector_dict:
+    for id in vector_dict.keys():
       # get the last value of source which the filename
-      doc_name = vector_dict[i].metadata["source"].split('/')[-1]
+      doc_name = vector_dict[id].metadata["source"].split('/')[-1]
       if filename == doc_name:
-        chunks.append(i)
+        chunks_id.append(id)
     
-    return chunks
+    return chunks_id
 
   def delete_document_by_chunks(self, chunks):
     self._vectorstore.delete(chunks)
