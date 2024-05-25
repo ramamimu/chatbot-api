@@ -8,5 +8,11 @@ def routes(handler) -> HandlerRequestType:
       method=Method.PUT,
       path="/files",
       handler=handler.put_embed_files_handler
+    ),
+    HandlerRequestType(
+      method=Method.DELETE(
+        path="/files/knowledge",
+        handler=handler.delete_file_knowledge_handler
+      )
     )
   ]

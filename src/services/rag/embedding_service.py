@@ -26,7 +26,7 @@ class EmbeddingService:
     embedded_document = FAISS.from_documents(splitted_document, self._embedding_model)
     return embedded_document
   
-  def save_local_embedded_document(self, embedded_document, path):
+  def save_embedded_document_to_local(self, embedded_document, path):
     embedded_document.save_local(folder_path=f"{path}/embedding")
 
 

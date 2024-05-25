@@ -37,3 +37,18 @@ class VectorstoreService:
   def similarity_search(self, question):
     ss = self._vectorstore.similarity_search(question, k=1)
     return ss
+  
+  def get_chunks_by_filename(self, filename: str):
+    vector_dict = self._vectorstore.docstore.__dict__
+    chunks = []
+
+    for i in vector_dict:
+      # get the last value of source which the filename
+      doc_name = vector_dict[i].metadata["source"].split('/')[-1]
+      if filename == doc_name:
+        chunks.append(i)
+    
+    return chunks
+
+  def delete_document_by_chunks(self, chunks):
+    self._vectorstore.delete(chunks)

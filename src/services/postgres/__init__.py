@@ -52,7 +52,7 @@ class PostgresDb:
     except Exception as e:
       session.rollback()
       print(f"Error transaction: {e}")
-      raise
+      raise Exception(e)
     finally:
       session.close()
 

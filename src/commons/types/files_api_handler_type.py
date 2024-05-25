@@ -1,6 +1,6 @@
 from fastapi import UploadFile
 from pydantic import BaseModel
 
-class PutEmbedFilesType(BaseModel):
+class DeleteFileKnowledgeType(BaseModel):
+    id: int
     name: str
-    file: UploadFile
