@@ -3,7 +3,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.embeddings import HuggingFaceEmbeddings
 
-from config import EMBED_MODEL_PATH, BASE_KNOWLEDGE_DOCUMENT_PATH, BASE_KNOWLEDGE_DOCUMENT_NAME, TEXT_GENERATION_MODEL_PATH
+from config import EMBED_MODEL_PATH, BASE_KNOWLEDGE_DOCUMENT_PATH, BASE_KNOWLEDGE_DOCUMENT_NAME
 
 # load the readable document
 doc = PyPDFLoader(f"{BASE_KNOWLEDGE_DOCUMENT_PATH}/{BASE_KNOWLEDGE_DOCUMENT_NAME}").load()
