@@ -1,3 +1,8 @@
+** TODO
+[] Fix database migration
+[] Fix run by container
+
+** Code Statue
 SUCCESS:
 1. status code created
 2. status code 200

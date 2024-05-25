@@ -1,0 +1,14 @@
+[Unit]
+Description=chatbot service      
+
+[Service]
+User=root
+WorkingDirectory=/home/azureuser/app/chatbot-api            
+ExecStart=/home/azureuser/app/chatbot-api/venv/bin/python3 /home/azureuser/app/chatbot-api/app.py
+# optional items below
+Restart=always
+RestartSec=2
+# replace /home/user/.virtualenv/bin/python with your virtualenv and main.py with your script
+
+[Install]
+WantedBy=multi-user.target
