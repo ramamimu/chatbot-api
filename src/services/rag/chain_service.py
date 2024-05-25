@@ -26,7 +26,10 @@ class ChainService:
     )
 
   def _init_prompt(self):
-    template = """SYSTEM: Anda adalah chatbot interaktif bernama TANYABOT untuk menjawab pertanyaan seputar mahasiswa Teknik Informatika ITS. Kamu bisa mengambil potongan konteks yang diambil berikut ini untuk menjawab pertanyaan tidak apa untuk bilang tidak tahu. Buatlah jawaban yang ringkas.
+    '''
+    Prompt engineer should work in here :)
+    '''
+    template = """SYSTEM: Anda adalah chatbot interaktif bernama TANYABOT.
       CONTEXT: {context}
 
       Question: {question}

@@ -2,11 +2,12 @@ import os
 
 from huggingface_hub import snapshot_download, login
 from dotenv import load_dotenv
+from config import PREFIX_DIR_MODEL
 
 load_dotenv()
 login(os.getenv("HUGGINGFACEHUB_API_TOKEN"))
 
-prefix_dir = "./src/commons/models"
+prefix_dir = PREFIX_DIR_MODEL
 
 models = {
   "indo_sentence": {

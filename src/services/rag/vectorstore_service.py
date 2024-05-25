@@ -24,6 +24,7 @@ class VectorstoreService:
   def load_all_local_embedding(self):
     files = self._files_db_service.get_all_file()
     for file in files:
+      print(f"{file.path} registered as knowledge")
       self.add_vectostore(file.path)
   
   def add_vectostore(self, path):

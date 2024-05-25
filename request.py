@@ -1,7 +1,9 @@
 import requests
 from config import PORT
 
-URL = f"http://localhost:{PORT}"
+# URL = f"http://localhost:{PORT}"
+# URL = f"http://localhost:5000"
+URL = f"http://20.80.233.67:{PORT}"
 
 def get_ping():
     ping = requests.get(f'{URL}/ping')
@@ -64,4 +66,15 @@ def post_questions(question, is_bahasa=True):
 # post_stream_generator()
 # post_questions("bagaimana Pengambilan MK non-Konversi di semester yang sama dengan pengambilan MK Konversi? jawab bahasa indonesia")
 # post_questions("who are you?", is_bahasa=False)
-post_questions("who are you?", is_bahasa=True)
+# post_questions("tell me By participating in the MSIB program at Gojek for the past 4.5 months,?", is_bahasa=False)
+# post_questions("what FBON service is?", is_bahasa=False)
+# post_questions("Weekly Tracker Automation?", is_bahasa=False)
+# post_questions("tell me Weekly Summary September 22, 2023", is_bahasa=False)
+# post_questions("please tell me about UUD 1945 pasal 11?", is_bahasa=True)
+# post_questions("please tell me about pasal 11?", is_bahasa=False)
+# post_questions("apa isi UUD 1945 pasal 11?", is_bahasa=True)
+# post_questions("What he did During the week of August 28?", is_bahasa=False)
+# post_questions("could you tell me about FBON project?", is_bahasa=False)
+# post_questions("tell me about ITS Surabaya", is_bahasa=False)
+# post_questions("what is the requirement to follow internship program", is_bahasa=False)
+

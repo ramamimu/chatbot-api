@@ -2,9 +2,9 @@ venv
 .test
 .env
 __pycache__
-src/commons/models/*
-src/commons/documents/*
-!src/commons/documents/ITS-profile/
-!src/commons/documents/ITS-profile/ITS-Profile.pdf
-src/commons/documents/ITS-profile/embedding/*
+models/*
+documents/*
+!documents/ITS-profile/
+!documents/ITS-profile/ITS-Profile.pdf
+documents/ITS-profile/embedding/*
 .pytest_cache
