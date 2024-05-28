@@ -13,5 +13,10 @@ def routes(handler) -> List[HandlerRequestType]:
       method=Method.POST.value,
       path="/questions",
       handler=handler.post_question_stream_handler
+    ),
+    HandlerRequestType(
+      method=Method.POST.value,
+      path="/questions/similarity-search",
+      handler=handler.post_question_similarity_search_handler
     )
   ]

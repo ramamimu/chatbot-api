@@ -1,10 +1,11 @@
-from src.commons.types.questions_api_handler_type import PostQuestionStreamGeneratorType
+from src.commons.types.questions_api_handler_type import PostQuestionStreamGeneratorType, PostQuestionSimilaritySearchType
 from sse_starlette.sse import EventSourceResponse
 
 class QuestionsHandler:
-  def __init__(self, lorem_generator_service, chain_service):
+  def __init__(self, lorem_generator_service, chain_service, vectorstore_service):
     self._lorem_generator_service = lorem_generator_service
     self._chain_service = chain_service
+    self._vectorstore_service = vectorstore_service
   
   async def post_question_stream_generator_handler(self, payload: PostQuestionStreamGeneratorType):
     # ignore the id and question
@@ -18,3 +19,5 @@ class QuestionsHandler:
     async for chunk in self._chain_service.get_chain().astream(question):
         yield chunk
 
+  async def post_question_similarity_search_handler(self, payload: PostQuestionSimilaritySearchType):
+    return self._vectorstore_service.similarity_search(payload.question)

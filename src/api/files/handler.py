@@ -42,7 +42,7 @@ class FilesHandler:
   
   async def delete_file_knowledge_handler(self, payload: DeleteFileKnowledgeType):
     '''
-    1. check is id and name available and return file name
+    1. check is id and name available and return detail file
 
     2. get all chunks by filename
 
@@ -50,7 +50,7 @@ class FilesHandler:
 
     4. delete file by id in database
 
-    4. delete file in directory
+    5. delete file in directory
     '''
     
     file = self._files_db_service.verify_file_by_id_name(payload.id, payload.name)

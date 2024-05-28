@@ -11,7 +11,7 @@ class VectorstoreService:
     self._files_db_service = files_db_service
 
   def get_retriever(self):
-    retriever = self._vectorstore.as_retriever(search_kwargs={"k": 1})
+    retriever = self._vectorstore.as_retriever(search_kwargs={"k": 3})
     if retriever is None:
         raise ValueError("Vectorstore as retriever returned None, expected a valid retriever.")
     return retriever
@@ -36,7 +36,7 @@ class VectorstoreService:
       self._files_db_service.delete_file_by_id(path)
   
   def similarity_search(self, question):
-    ss = self._vectorstore.similarity_search(question, k=1)
+    ss = self._vectorstore.similarity_search(question, k=3)
     return ss
   
   def get_chunks_by_filename(self, filename: str):

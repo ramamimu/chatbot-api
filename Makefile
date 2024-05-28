@@ -2,6 +2,15 @@ init:
 	docker compose -f ./compose/postgres.yaml up -d
 	docker exec -ti postgres_chatbot psql -U postgres -c "CREATE DATABASE chatbot"
 
+drop-table-files:
+	docker exec -ti postgres_chatbot psql -U postgres -d chatbot -c "DROP TABLE files"
+
+drop-alembic-db:
+	docker exec -ti postgres_chatbot psql -U postgres -d chatbot -c "DROP TABLE alembic_version;"
+
+reset-files-table:
+	docker exec -ti postgres_chatbot psql -U postgres -d chatbot -c "TRUNCATE TABLE files; DROP SEQUENCE files_id_seq;"
+
 migrate-up:
 	alembic upgrade +1
 

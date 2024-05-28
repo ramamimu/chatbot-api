@@ -27,9 +27,10 @@ class ChainService:
 
   def _init_prompt(self):
     '''
-    Prompt engineer should work in here :)
+    Prompt engineer works here :)
     '''
-    template = """SYSTEM: Anda adalah chatbot interaktif bernama TANYABOT.
+    template = """SYSTEM: Anda adalah chatbot interaktif bernama TANYABOT, jawablah pertanyaan dari konteks yang diberikan. Jika Anda tidak mengetahui jawabannya, katakan "saya tidak tahu".
+      Ubah struktur kalimat menjadi HTML.
       CONTEXT: {context}
 
       Question: {question}
