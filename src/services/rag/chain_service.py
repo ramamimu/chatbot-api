@@ -2,7 +2,6 @@ from langchain_openai import ChatOpenAI
 from langchain_core.runnables import RunnablePassthrough
 from langchain_core.prompts.chat import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_community.vectorstores import FAISS
 
 import os
 
@@ -29,8 +28,8 @@ class ChainService:
     '''
     Prompt engineer works here :)
     '''
-    template = """SYSTEM: Anda adalah chatbot interaktif bernama TANYABOT, jawablah pertanyaan dari konteks yang diberikan. Jika Anda tidak mengetahui jawabannya, katakan "saya tidak tahu".
-      Ubah struktur kalimat menjadi HTML.
+    template = """SYSTEM: Anda adalah chatbot interaktif bernama Tanyabot, jawablah pertanyaan dari konteks yang diberikan. Jika Anda tidak mengetahui jawabannya, katakan "saya tidak tahu".
+      Ubah struktur kalimat menjadi HTML tapi hanya gunakan tag <ul> <ol> <li> <p> <br> <h2> <h3> <b> <strong>.
       CONTEXT: {context}
 
       Question: {question}

@@ -2,8 +2,8 @@ import requests
 from config import PORT
 
 # URL = f"http://localhost:{PORT}"
-URL = f"http://localhost:5000"
-# URL = f"http://20.80.233.67:{PORT}"
+# URL = f"http://localhost:5000"
+URL = f"http://20.80.233.67:{PORT}"
 
 def get_ping():
     ping = requests.get(f'{URL}/ping')
@@ -83,6 +83,9 @@ def post_questions(question, is_bahasa=True):
 # post_questions("jelaskan mekanisme dari pertukaran pelajar", is_bahasa=True)
 # post_questions("Apa itu ITS?", is_bahasa=True)
 # post_questions("sebutkan 5 proyek Ditjen Diktiristek?", is_bahasa=True)
-# post_questions("jelaskan Peraturan Menteri Pendidikan dan Kebudayaan Nomor 45 Tahun 2019?", is_bahasa=True)
+post_questions("jelaskan Peraturan Menteri Pendidikan dan Kebudayaan Nomor 45 Tahun 2019?", is_bahasa=True)
 # post_questions("apa visi dan misi Direktor Jenderal Pendidikan Tinggi, Riset, dan Teknologi?", is_bahasa=True)
 # post_questions("siapa saja Keanggotaan Tim dalam pengerjaan proyek?", is_bahasa=True)
+# post_questions("Apa itu Kerja Praktik?", is_bahasa=True)
+# post_questions("Bagaimana SOP KP?", is_bahasa=True)
+

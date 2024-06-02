@@ -51,6 +51,8 @@ class FilesHandler:
     4. delete file by id in database
 
     5. delete file in directory
+
+    6. delete knowledge in all vectorstore
     '''
     
     file = self._files_db_service.verify_file_by_id_name(payload.id, payload.name)

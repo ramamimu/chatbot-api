@@ -1,4 +1,6 @@
 from src.services.postgres.models.tables import Files
+from src.exceptions.not_found_exception import NotFoundException
+
 from sqlalchemy.sql import and_
 
 class FilesDbService:
@@ -39,7 +41,7 @@ class FilesDbService:
       file = files[0]
       return file
     except Exception as e:
-      raise Exception(e)
+      raise NotFoundException().throw("file not exist")
     finally:
       session.close()
 
@@ -48,8 +50,8 @@ class FilesDbService:
     try:
       files = session.query(Files).filter(and_(Files.id == id, Files.custom_name == name))
       return files[0]
-    except Exception as e:
-      raise Exception(e)
+    except:
+      raise NotFoundException().throw("name or id not exist")
     finally:
       session.close()
   
@@ -59,6 +61,6 @@ class FilesDbService:
       files = session.query(Files).all()
       return files
     except Exception as e:
-      raise Exception(e)
+      raise NotFoundException().throw("error while get files")
     finally:
       session.close()
