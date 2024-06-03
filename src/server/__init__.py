@@ -9,8 +9,10 @@ from src.server.endpoint_factory import EndpointFactory
 # services
 from src.services.generator.lorem_generator_service import LoremGeneratorService
 from src.services.storage.files_storage_service import FileStorageService
-from src.services.postgres.files_db_service import FilesDbService
 from src.services.postgres import PostgresDb
+from src.services.postgres.files_db_service import FilesDbService
+from src.services.postgres.topics_db_service import TopicsDbService
+from src.services.postgres.topic_files_db_service import TopicFilesDbService
 from src.services.rag.embedding_service import EmbeddingService
 from src.services.rag.vectorstore_service import VectorstoreService
 from src.services.rag.chain_service import ChainService
@@ -19,6 +21,7 @@ from src.services.rag.chain_service import ChainService
 import src.api.questions as questions_endpoint
 import src.api.health_check as health_check_endpoint
 import src.api.files as files_endpoint
+import src.api.topics as topics_endpoint
 
 # NOTES
 # regular method is for accessing self variable
@@ -48,6 +51,8 @@ class Server:
     lorem_generator_service = LoremGeneratorService()
     file_storage_service = FileStorageService()
     files_db_service = FilesDbService(db)
+    topics_db_service = TopicsDbService(db)
+    topic_files_db_service = TopicFilesDbService(db)
     embedding_service = EmbeddingService(embedding_model)
     vectorstore_service = VectorstoreService(embedding_model, files_db_service)
     chain_service = ChainService(files_db_service, vectorstore_service)
@@ -60,6 +65,7 @@ class Server:
     endpoint_factory.routes_creator(health_check_endpoint.register())
     endpoint_factory.routes_creator(questions_endpoint.register(lorem_generator_service, chain_service, vectorstore_service))
     endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service, embedding_service, vectorstore_service))
+    endpoint_factory.routes_creator(topics_endpoint.register(files_db_service, topics_db_service, topic_files_db_service))
 
   def run(self):
     uvicorn.run(self._app, host="0.0.0.0", port=self.port)
