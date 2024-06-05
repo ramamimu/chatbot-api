@@ -1,4 +1,4 @@
-from typing import Type
+from typing import List, Type
 from src.exceptions.invariant_error import InvariantError
 from src.services.postgres import PostgresDb
 from src.services.postgres.models.tables import Files
@@ -31,6 +31,20 @@ class FilesDbService:
         raise InvariantError("file not found")
 
       return file
+    except:
+      raise InvariantError("error when get file")
+    finally:
+      session.close()
+
+  def get_files_by_id(self, files_id: List[str]):
+    session = self._db.get_session()
+    try:
+      files = session.query(Files).filter(Files.id.in_(files_id)).all()
+
+      if not files:
+        raise InvariantError("files not found")
+
+      return files
     except:
       raise InvariantError("error when get file")
     finally:
@@ -74,7 +88,7 @@ class FilesDbService:
     finally:
       session.close()
   
-  def verify_all_file_names_exist(self, file_names):
+  async def verify_all_file_names_exist(self, file_names):
       session = self._db.get_session()
       try:
           # Query all files that match the names in the list

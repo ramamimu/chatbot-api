@@ -25,6 +25,7 @@ class TopicsDbService():
         session.refresh(topic)
       else:
         raise 
+      return topic
     except:
       raise NotFoundError("topic not found").throw()
     finally:
@@ -47,11 +48,12 @@ class TopicsDbService():
   def verify_existance_topic_by_id(self, topic_id):
     session = self._db.get_session()
     try:
-      topics = session.query(Topics).filter(Topics.id == topic_id).first()
+      topic = session.query(Topics).filter(Topics.id == topic_id).first()
       
       # if exist, throw error
-      if not topics:
+      if not topic:
         raise
+      return topic
     except:
       raise InvariantError("topic is not exist").throw()
     finally:

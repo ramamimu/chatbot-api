@@ -2,8 +2,8 @@ import requests
 from config import PORT
 
 # URL = f"http://localhost:{PORT}"
-# URL = f"http://localhost:5000"
-URL = f"http://20.80.233.67:{PORT}"
+URL = f"http://localhost:5000"
+# URL = f"http://20.80.233.67:{PORT}"
 
 def get_ping():
     ping = requests.get(f'{URL}/ping')

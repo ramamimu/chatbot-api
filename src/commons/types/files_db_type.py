@@ -20,6 +20,3 @@ class FilesEntity(BaseModel):
 
     class Config:
         orm_mode = True
-
-    class Config:
-        orm_mode = True
