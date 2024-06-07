@@ -5,6 +5,7 @@ from src.services.postgres.models.tables import Files
 from src.exceptions.not_found_error import NotFoundError
 
 from sqlalchemy.sql import and_
+from sqlalchemy.orm import joinedload
 
 class FilesDbService:
   def __init__(self, db) -> None:
@@ -13,6 +14,7 @@ class FilesDbService:
   def add_file(self, custom_name, file_name, path):
     new_file = Files(custom_name=custom_name, file_name=file_name, path=path)
     self._db.transaction(lambda session: session.add(new_file))
+    return new_file
 
   def get_all_file(self):
     session = self._db.get_session()
@@ -32,6 +34,7 @@ class FilesDbService:
 
       return file
     except:
+      session.rollback()
       raise InvariantError("error when get file")
     finally:
       session.close()
@@ -39,13 +42,14 @@ class FilesDbService:
   def get_files_by_id(self, files_id: List[str]):
     session = self._db.get_session()
     try:
-      files = session.query(Files).filter(Files.id.in_(files_id)).all()
+      files = session.query(Files).options(joinedload("*")).filter(Files.id.in_(files_id)).all()
 
       if not files:
         raise InvariantError("files not found")
 
       return files
     except:
+      session.rollback()
       raise InvariantError("error when get file")
     finally:
       session.close()
@@ -64,6 +68,7 @@ class FilesDbService:
         raise NotFoundError("file not exist").throw()
       return file
     except Exception as e:
+      session.rollback()
       raise NotFoundError("error while verify file").throw()
     finally:
       session.close()
@@ -74,6 +79,7 @@ class FilesDbService:
       file = session.query(Files).filter(and_(Files.id == id, Files.custom_name == name)).first()
       return file
     except:
+      session.rollback()
       raise NotFoundError("name or id not exist").throw()
     finally:
       session.close()
@@ -84,6 +90,7 @@ class FilesDbService:
       files = session.query(Files).all()
       return files
     except Exception as e:
+      session.rollback()
       raise NotFoundError("error while get files").throw()
     finally:
       session.close()
@@ -91,18 +98,19 @@ class FilesDbService:
   async def verify_all_file_names_exist(self, file_names):
       session = self._db.get_session()
       try:
-          # Query all files that match the names in the list
-          files = session.query(Files).filter(Files.custom_name.in_(file_names)).all()
-          
-          # Check if all provided file names exist
-          existing_file_names = {file.custom_name for file in files}
-          for file_name in file_names:
-              if file_name not in existing_file_names:
-                  raise NotFoundError(f"File name '{file_name}' does not exist").throw()
+        # Query all files that match the names in the list
+        files = session.query(Files).filter(Files.custom_name.in_(file_names)).all()
+        
+        # Check if all provided file names exist
+        existing_file_names = {file.custom_name for file in files}
+        for file_name in file_names:
+            if file_name not in existing_file_names:
+                raise
 
-          return files
+        return files
       except Exception as e:
-          raise NotFoundError("Error while verifying file names").throw()
+        session.rollback()
+        raise NotFoundError(f"File name '{file_name}' does not exist").throw()
       finally:
-          session.close()
+        session.close()
 

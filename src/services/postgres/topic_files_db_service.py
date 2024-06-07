@@ -8,7 +8,7 @@ class TopicFilesDbService:
   def __init__(self, db) -> None:
     self._db: Type[PostgresDb] = db
 
-  def add_files_topic(self, topic: Type[Topics], files: List[Type[Files]], is_edit=False):
+  def create_topic_files(self, topic: Type[Topics], files: List[Type[Files]], is_edit=False):
     def fn(session):
       if not is_edit:
         session.add(topic)
@@ -23,26 +23,36 @@ class TopicFilesDbService:
             session.add(association)
 
     self._db.transaction(fn)
+  
+  async def add_files_to_topic(self, file_id, topic_id):
+    file = TopicFiles(file_id=file_id, topic_id=topic_id)
+    self._db.transaction(lambda session: session.add(file))
    
   def get_files_by_topic(self, topic_id: str) -> List[Type[Files]]:
-      session: Session = self._db.get_session()
-      try:
-          # Query the TopicFiles association table to get all file_ids for the topic
-          associations = session.query(TopicFiles).filter(TopicFiles.topic_id == topic_id).all()
-          # Extract file_ids from the associations
-          file_ids = [association.file_id for association in associations]
-          # Query the Files table to get all files by the collected file_ids
-          files = session.query(Files).filter(Files.id.in_(file_ids)).all()
-          return files
-      finally:
-          session.close()
-  
+    session: Session = self._db.get_session()
+    try:
+        # Query the TopicFiles association table to get all file_ids for the topic
+        associations = session.query(TopicFiles).filter(TopicFiles.topic_id == topic_id).all()
+        # Extract file_ids from the associations
+        file_ids = [association.file_id for association in associations]
+        # Query the Files table to get all files by the collected file_ids
+        files = session.query(Files).filter(Files.id.in_(file_ids)).all()
+        return files
+    finally:
+        session.close()
+
+  def get_topics_by_file_id(self, file_id: str) -> List[Type[Files]]:
+    session: Session = self._db.get_session()
+    try:
+        # Query the TopicFiles association table to get all file_ids for the topic
+        associations = session.query(TopicFiles).filter(TopicFiles.file_id == file_id).all()
+        # Extract file_ids from the associations
+        file_ids = [association.file_id for association in associations]
+        # Query the Files table to get all files by the collected file_ids
+        files = session.query(Files).filter(Files.id.in_(file_ids)).all()
+        return files
+    finally:
+        session.close()
+
   def delete_topic_files_by_topic_id(self, topic_id):
     self._db.transaction(lambda session: session.query(TopicFiles).filter(TopicFiles.topic_id == topic_id).delete())
-
-  def update_files_by_topic_id(self, topic_id, files):
-    session = self._db.get_session()
-    try:
-      session.query(TopicFiles).filter_by(topic_id=topic_id).delete()
-    finally:
-      session.close()

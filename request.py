@@ -28,7 +28,7 @@ def post_stream_generator():
                     print("triggered => ")
                     yield line.decode('utf-8')
 
-    url = f'{URL}/questions/stream-generator'
+    url = f'{URL}/questions/topic'
     # url = 'https://jsonplaceholder.typicode.com/posts/1'
     data_rcv = ''
     for line in get_stream(url):
@@ -55,7 +55,7 @@ def post_questions(question, is_bahasa=True):
                     print("triggered => ")
                     yield line.decode('utf-8')
 
-    url = f'{URL}/questions'
+    url = f'{URL}/questions/topic'
     # url = 'https://jsonplaceholder.typicode.com/posts/1'
     data_rcv = ''
     for line in get_stream(url):
@@ -83,9 +83,14 @@ def post_questions(question, is_bahasa=True):
 # post_questions("jelaskan mekanisme dari pertukaran pelajar", is_bahasa=True)
 # post_questions("Apa itu ITS?", is_bahasa=True)
 # post_questions("sebutkan 5 proyek Ditjen Diktiristek?", is_bahasa=True)
-post_questions("jelaskan Peraturan Menteri Pendidikan dan Kebudayaan Nomor 45 Tahun 2019?", is_bahasa=True)
+# post_questions("jelaskan Peraturan Menteri Pendidikan dan Kebudayaan Nomor 45 Tahun 2019?", is_bahasa=True)
 # post_questions("apa visi dan misi Direktor Jenderal Pendidikan Tinggi, Riset, dan Teknologi?", is_bahasa=True)
 # post_questions("siapa saja Keanggotaan Tim dalam pengerjaan proyek?", is_bahasa=True)
 # post_questions("Apa itu Kerja Praktik?", is_bahasa=True)
 # post_questions("Bagaimana SOP KP?", is_bahasa=True)
+# post_questions("hi, siapa anda?", is_bahasa=True)
+# post_questions("apa isi dari UUD 1945?", is_bahasa=True)
+# post_questions("siapakah rektor ITS 2022?", is_bahasa=True)
+post_questions("dimanakah jakarta?", is_bahasa=True)
+
 

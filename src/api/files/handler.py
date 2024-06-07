@@ -1,69 +1,88 @@
-from typing import List
+from typing import List, Optional, Type
 from fastapi import File, UploadFile, Form
 from fastapi.responses import FileResponse
 
 from src.commons.entities.files_db_entity import files_db_entity
-from src.commons.types.files_api_handler_type import DeleteFileKnowledgeType
+from src.commons.entities.topics_entity import topics_form_payload
+from src.commons.types.files_api_handler_type import DeleteFileKnowledgeType, Topic
+from src.services.postgres.files_db_service import FilesDbService
+from src.services.postgres.models.tables import Files, Topics
+from src.services.postgres.topic_files_db_service import TopicFilesDbService
+from src.services.postgres.topics_db_service import TopicsDbService
+from src.services.rag.embedding_service import EmbeddingService
+from src.services.rag.vectorstore_service import VectorstoreService
+from src.services.rag.vectorstore_topic_service import VectorstoreTopicService
+from src.services.storage.files_storage_service import FileStorageService
 
 class FilesHandler:
-  def __init__(self, file_storage_service, files_db_service, embedding_service, vectorstore_service):
-    self._file_storage_service = file_storage_service
-    self._files_db_service = files_db_service
-    self._embedding_service = embedding_service
-    self._vectorstore_service = vectorstore_service
+  def __init__(self, file_storage_service, files_db_service, embedding_service, vectorstore_service, topics_db_service, topic_files_db_service, vectorstore_topic_service):
+    self._file_storage_service: Type[FileStorageService] = file_storage_service
+    self._files_db_service: Type[FilesDbService] = files_db_service
+    self._embedding_service: Type[EmbeddingService] = embedding_service
+    self._vectorstore_service: Type[VectorstoreService] = vectorstore_service
+    self._topics_db_service: Type[TopicsDbService] = topics_db_service
+    self._topic_files_db_service: Type[TopicFilesDbService] = topic_files_db_service
+    self._vectorstore_topic_service: Type[VectorstoreTopicService] = vectorstore_topic_service
 
-  async def put_embed_files_handler(self, name: str = Form(...), file: UploadFile = File(...)):
+  async def put_embed_files_handler(self, name: str = Form(...), file: UploadFile  = File(...)):
     '''
-    1. create dir src/commons/<title> and return the path
+    ## Posting new file as a new knowledge
+
+    - verify existance topic ids 
+
+    - create dir src/commons/<title> and return the path
     
-    2. save file in src/commons/<title>/<title.pdf>
+    - save file in src/commons/<title>/<title.pdf>
     
-    3. write name and path in database
+    - write name and path in database
     
-    4. split document
+    - split document
     
-    5. embed document
+    - embed document
     
-    6. save embedded document in local
+    - save embedded document in local
     
-    7. update vectorstore
-    
-    8. update chain (tested does chain still need to update)
+    - update vectorstore topics based on the file
     '''
-    
     full_path:str = await self._file_storage_service.save_file_to_folder(name, file)
     self._files_db_service.add_file(name, file.filename, full_path)
     splitted_document = self._embedding_service.split_document(f"{full_path}/{file.filename}")
     embedded_document = self._embedding_service.embed_document(splitted_document)
     self._embedding_service.save_embedded_document_to_local(embedded_document, full_path)
-    self._vectorstore_service.add_vectostore(full_path)
-    
     return {"status":"success"}
   
-  async def delete_file_knowledge_handler(self, payload: DeleteFileKnowledgeType):
+  async def delete_file_handler(self, payload: DeleteFileKnowledgeType):
     '''
-    1. check is id and name available and return detail file
+    for next iteration, `DELETE /files/knowledge` will replaced by `DELETE /files` with similar payload
+    return type of `chunks` will deleted in the next iteration, so it just return `{"status":"success"}`
 
-    2. get all chunks by filename
+    - check is id and name available and return detail file
 
-    3. delete all chunks
+    - get all topics which are have this type of knowledge
 
-    4. delete file by id in database
+    - delete the chunks in particular topic
 
-    5. delete file in directory
+    - repeat the method untill all of this included file knowledge has been deleted at all topics
 
-    6. delete knowledge in all vectorstore
+    - repeat the method untill all of this included file knowledge has been deleted at all topics
+
+    - delete file in directory
+
+    - delete knowledge in all vectorstore
     '''
     
     file = self._files_db_service.verify_file_by_id_name(payload.id, payload.name)
-    chunks: List[str] = self._vectorstore_service.get_chunks_by_filename(file.file_name)
-    self._vectorstore_service.delete_document_by_chunks(chunks)
+    topics: List[Topics] = self._topic_files_db_service.get_topics_by_file_id(payload.id)
+    for topic in topics:
+      chunks: List[str] = self._vectorstore_topic_service.get_chunks_by_filename(file.file_name, topic.name)
+      self._vectorstore_topic_service.delete_document_by_chunks(chunks, topic.name)
+
     self._files_db_service.delete_file_by_id(file.id)
     self._file_storage_service.delete_directory(file.path)
 
     return {
       "status": "success",
-      "chunks": chunks
+      "chunks": []
     }
     
   async def get_files_handler(self):

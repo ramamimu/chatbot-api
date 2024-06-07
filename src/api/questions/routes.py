@@ -12,7 +12,12 @@ def routes(handler) -> List[HandlerRequestType]:
     HandlerRequestType(
       method=Method.POST.value,
       path="/questions",
-      handler=handler.post_question_stream_handler
+      handler=handler.post_question_handler
+    ),
+    HandlerRequestType(
+      method=Method.POST.value,
+      path="/questions/topic",
+      handler=handler.post_question_handler
     ),
     HandlerRequestType(
       method=Method.POST.value,

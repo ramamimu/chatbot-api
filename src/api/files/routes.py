@@ -18,8 +18,13 @@ def routes(handler) -> List[HandlerRequestType]:
     ),
     HandlerRequestType(
       method=Method.DELETE.value,
+      path="/files",
+      handler=handler.delete_file_handler
+    ),
+    HandlerRequestType(
+      method=Method.DELETE.value,
       path="/files/knowledge",
-      handler=handler.delete_file_knowledge_handler
+      handler=handler.delete_file_handler
     ),
     HandlerRequestType(
       method=Method.GET.value,

@@ -60,14 +60,13 @@ class Server:
     vectorstore_topic_service = VectorstoreTopicService(topics_db_service, topic_files_db_service, vectorstore_service)
 
     # service builder
-    vectorstore_service.load_all_local_embedding()
     vectorstore_topic_service.load_topic_store()
 
     # routes initiation
     endpoint_factory = EndpointFactory(self._app)
     endpoint_factory.routes_creator(health_check_endpoint.register())
     endpoint_factory.routes_creator(questions_endpoint.register(lorem_generator_service, chain_service, vectorstore_service, vectorstore_topic_service))
-    endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service, embedding_service, vectorstore_service))
+    endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service, embedding_service, vectorstore_service, topics_db_service, topic_files_db_service, vectorstore_topic_service))
     endpoint_factory.routes_creator(topics_endpoint.register(files_db_service, topics_db_service, topic_files_db_service, vectorstore_topic_service))
 
   def run(self):

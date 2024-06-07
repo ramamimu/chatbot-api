@@ -30,11 +30,12 @@ class TopicsHandler():
     5. create new vectorstore topic
     '''
     self._topics_db_service.verify_availability_topic_name(payload.topicName)
-    topic: Type[Topics] = self._topics_db_service.add_topic(payload.topicName)
     files = await self._files_db_service.verify_all_file_names_exist(payload.nameFiles) 
+
+    topic: Type[Topics] = self._topics_db_service.add_topic(payload.topicName)
     self._vectorstore_topic_service.create_new_topic(payload.topicName, [ file.id for file in files ])
     # have no idea why add files topic method make the process deadlock when put after verify file names exist
-    self._topic_files_db_service.add_files_topic(topic, files)
+    self._topic_files_db_service.create_topic_files(topic, files)
     return {"message": "success create topic"}
 
   async def get_topic_by_id_handler(self, topic_id):
@@ -106,6 +107,6 @@ class TopicsHandler():
     self._topic_files_db_service.delete_topic_files_by_topic_id(topic_id)
     files = await self._files_db_service.verify_all_file_names_exist(payload.nameFiles) 
     self._vectorstore_topic_service.create_new_topic(topic.name, [file.id for file in files])
-    self._topic_files_db_service.add_files_topic(Topics(id=topic_id, name=payload.topicName), files, is_edit=True)
+    self._topic_files_db_service.create_topic_files(Topics(id=topic_id, name=payload.topicName), files, is_edit=True)
 
     return {"message": f"success edit {payload.topicName} topic"}
