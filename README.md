@@ -2,6 +2,8 @@
 
 ## how to run manually
 
+> if run manually, only supported on unix
+
 - create virtual environment
 
   ```
@@ -35,7 +37,19 @@
 - Apply the Alembic migrations
 
   ```
-  make migrate-checkout head
+  make migrate-checkout r=head
+  ```
+
+- download embeeding model
+
+  ```
+  python3 model.download.py
+  ```
+
+- embed basic knowledge for vectorstore db
+
+  ```
+  python3 embed.init.py
   ```
 
 - run the app
@@ -64,7 +78,9 @@ docker compose up -d
 
 `-d` means running as daemon
 
-exposing `port 8000` as default
+exposing `port 5001` as default
+
+> sometimes, the code was error. Keep build the image first untill succed then `up`
 
 ## documentation
 

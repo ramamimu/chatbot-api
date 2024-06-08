@@ -1,5 +1,0 @@
-services:
-  chatbot-api:
-    build: .
-    ports:
-      - "5000:5000"

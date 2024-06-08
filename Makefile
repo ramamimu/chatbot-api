@@ -51,4 +51,5 @@ start-test:
 	python3 app.py test
 
 start-deploy:
+	alembic upgrade head
 	fastapi run app.py

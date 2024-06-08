@@ -4,12 +4,27 @@ WORKDIR /app
 
 COPY requirements.txt /app/
 
-# RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
+
+COPY . /app/
+
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    iputils-ping \
+    curl \
+    netcat
 
 RUN ls -a /app
 
-COPY * /app/
+ENV PGUSER=postgres
+ENV PGHOST=postgres-chatbot
+ENV PGPASSWORD=postgres
+ENV PGDATABASE=chatbot
+ENV PGPORT=5432
 
-EXPOSE 8000
+RUN python3 model.download.py
+RUN python3 embed.init.py
 
-CMD [ "fastapi", "run", "app.py" ]
+EXPOSE 5000
+
+CMD [ "make", "start-deploy"]
