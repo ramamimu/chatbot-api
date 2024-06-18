@@ -42,6 +42,8 @@ class FilesHandler:
   
   async def delete_file_knowledge_handler(self, payload: DeleteFileKnowledgeType):
     '''
+    Next iteration, `DELETE` /files/knowledge will be replaced by `DELETE` /files 
+
     1. check is id and name available and return detail file
 
     2. get all chunks by filename
