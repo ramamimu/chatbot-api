@@ -16,8 +16,13 @@ class QuestionsHandler:
     return EventSourceResponse(self._chain_streamer(question, payload.id), media_type='text/event-stream')
 
   async def _chain_streamer(self, question, id):
-    async for chunk in self._chain_service.get_chain().astream(question):
+    async for chunk in self._chain_service.get_chain(is_stream=True, id=id).astream(question):
         yield chunk
+
+  async def post_question_no_stream_handler(self, payload: PostQuestionStreamGeneratorType):
+    question = f"{payload.question}. Jawab menggunakan Bahasa Indonesia!" if payload.isBahasa else f"{payload.question}. please answer in English!" 
+    return self._chain_service.get_chain(is_stream=False, id=id, is_output_html=False).invoke(question)
+
 
   async def post_question_similarity_search_handler(self, payload: PostQuestionSimilaritySearchType):
     return self._vectorstore_service.similarity_search(payload.question)

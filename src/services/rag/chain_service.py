@@ -12,26 +12,22 @@ class ChainService:
   def __init__(self, files_db_service, vectorstore_service) -> None:
     self._files_db_service = files_db_service
     self._vectorstore_service = vectorstore_service
-    self._chain = self._init_chain()
 
-  def _init_chain(self):
-    return (
-      {
-        "context": self._vectorstore_service.get_retriever(), 
-        "question": RunnablePassthrough()
-      }
-      | self._init_prompt()
-      | self._init_llm()
-      | StrOutputParser()
-    )
-
-  def _init_prompt(self):
+  def _init_prompt(self, is_output_html):
     '''
     Prompt engineer works here :)
     '''
-    template = """SYSTEM: Anda adalah chatbot interaktif bernama TANYABOT, jawablah pertanyaan dari konteks yang diberikan. Jika Anda tidak mengetahui jawabannya, katakan "saya tidak tahu".
-      Ubah struktur kalimat menjadi HTML.
-      CONTEXT: {context}
+    template = """
+      SYSTEM: Anda adalah chatbot interaktif bernama Tanyabot. Anda bertugas untuk menjawab pertanyaan seputar akademik Teknik Informatika ITS.
+      Ikuti instruksi ini untuk menjawab pertanyaan: jawablah pertanyaan dari context yang telah diberikan. Jika Anda tidak berhasil mendapatkan jawaban, katakan "saya tidak tahu".
+      Ubah struktur kalimat menjadi HTML tapi hanya gunakan tag <ul> <ol> <li> <p> <br> <h2> <h3> <b> <strong>.      
+      Context: {context}
+      
+      Question: {question}
+    """ if is_output_html else """
+      SYSTEM: Anda adalah chatbot interaktif bernama Tanyabot. Anda bertugas untuk menjawab pertanyaan seputar akademik Teknik Informatika ITS.
+      Ikuti instruksi ini untuk menjawab pertanyaan: jawablah pertanyaan dari context yang telah diberikan. Jika Anda tidak berhasil mendapatkan jawaban, katakan "saya tidak tahu".
+      Context: {context}
 
       Question: {question}
     """
@@ -39,12 +35,21 @@ class ChainService:
     prompt = ChatPromptTemplate.from_template(template)
     return prompt
   
-  def _init_llm(self):
-    return ChatOpenAI(model_name=TEXT_GENERATION_MODEL, temperature=0, streaming=True)
+  def _init_llm(self, is_stream: bool):
+    return ChatOpenAI(model_name=TEXT_GENERATION_MODEL, temperature=0.3, streaming=is_stream)
 
-  def get_chain(self):
+  def get_chain(self, is_stream: bool, id: str, is_output_html = True):
     '''
     The chain will automatically update since vectorstore update even with no reinitialization
     '''
-    return self._chain
+    chain = (
+      {
+        "context": self._vectorstore_service.get_retriever(), 
+        "question": RunnablePassthrough()
+      }
+      | self._init_prompt(is_output_html)
+      | self._init_llm(is_stream)
+      | StrOutputParser()
+    )
+    return chain
 
