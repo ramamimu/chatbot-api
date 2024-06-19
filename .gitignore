@@ -4,7 +4,4 @@ venv
 __pycache__
 models/*
 documents/*
-!documents/ITS-profile/
-!documents/ITS-profile/ITS-Profile.pdf
-documents/ITS-profile/embedding/*
 .pytest_cache
