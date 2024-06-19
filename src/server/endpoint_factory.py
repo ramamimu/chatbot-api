@@ -11,16 +11,21 @@ class EndpointFactory:
     for route in routes:
       self._create(route)
 
-  def _create(self, handler_endpoint: HandlerRequestType):
-    if handler_endpoint.method == Method.GET.value:
-      return self._app.get(handler_endpoint.path)(handler_endpoint.handler)
-    elif handler_endpoint.method == Method.POST.value:
-      return self._app.post(handler_endpoint.path)(handler_endpoint.handler)
-    elif handler_endpoint.method == Method.PUT.value:
-      return self._app.put(handler_endpoint.path)(handler_endpoint.handler)
-    elif handler_endpoint.method == Method.DELETE.value:
-      return self._app.delete(handler_endpoint.path)(handler_endpoint.handler)
+  def _create(self, endpoint: HandlerRequestType):
+    if endpoint.method == Method.GET.value:
+      return self._app.get(endpoint.path, status_code=self._status_code_handler(endpoint))(endpoint.handler)
+    elif endpoint.method == Method.POST.value:
+      return self._app.post(endpoint.path, status_code=self._status_code_handler(endpoint))(endpoint.handler)
+    elif endpoint.method == Method.PUT.value:
+      return self._app.put(endpoint.path, status_code=self._status_code_handler(endpoint))(endpoint.handler)
+    elif endpoint.method == Method.DELETE.value:
+      return self._app.delete(endpoint.path, status_code=self._status_code_handler(endpoint))(endpoint.handler)
     else:
-      raise Exception(f"method {handler_endpoint.method} not registered")
+      raise Exception(f"method {endpoint.method} not registered")
 
-  
+  @staticmethod
+  def _status_code_handler(endpoint: HandlerRequestType):
+    if endpoint.status_code is None:
+      return 200
+    
+    return endpoint.status_code

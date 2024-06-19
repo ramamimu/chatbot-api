@@ -1,5 +1,36 @@
+version: "3.8"
+
 services:
-  chatbot-api:
+  postgres-chatbot:
+    container_name: postgres-chatbot
+    image: postgres:9.6
+    ports:
+      - "5437:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: chatbot
+    volumes:
+      - postgres-chatbot-db:/var/lib/postgresql/data
+    networks:
+      - chatbot_network
+
+  chatbot-service:
     build: .
     ports:
-      - "5000:5000"
+      - "5001:5000"
+    environment:
+      - PGUSER=postgres
+      - PGHOST=postgres-chatbot
+      - PGPASSWORD=postgres
+      - PGDATABASE=chatbot
+      - PGPORT=5432
+    networks:
+      - chatbot_network
+
+volumes:
+  postgres-chatbot-db:
+
+networks:
+  chatbot_network:
+    external: true

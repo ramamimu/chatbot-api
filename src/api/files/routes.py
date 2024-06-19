@@ -7,7 +7,8 @@ def routes(handler) -> HandlerRequestType:
     HandlerRequestType(
       method=Method.PUT.value,
       path="/files",
-      handler=handler.put_embed_files_handler
+      handler=handler.put_embed_files_handler,
+      status_code=201
     ),
     HandlerRequestType(
       method=Method.GET.value,
