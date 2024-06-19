@@ -20,6 +20,7 @@ from src.services.rag.memorystore_service import MemorystoreService
 import src.api.questions as questions_endpoint
 import src.api.health_check as health_check_endpoint
 import src.api.files as files_endpoint
+import src.api.histories as histories_endpoint
 
 # NOTES
 # regular method is for accessing self variable
@@ -63,6 +64,7 @@ class Server:
     endpoint_factory.routes_creator(health_check_endpoint.register())
     endpoint_factory.routes_creator(questions_endpoint.register(lorem_generator_service, chain_service, vectorstore_service, memorystore_service))
     endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service, embedding_service, vectorstore_service))
+    endpoint_factory.routes_creator(histories_endpoint.register(memorystore_service))
 
   def run(self):
     uvicorn.run(self._app, host="0.0.0.0", port=self.port)
