@@ -1,5 +1,7 @@
 from src.services.postgres.models.tables import Files
 from sqlalchemy.sql import and_
+from src.exceptions.invariant_error import InvariantError
+from src.exceptions.not_found_error import NotFoundError
 
 class FilesDbService:
   def __init__(self, db) -> None:
@@ -20,9 +22,15 @@ class FilesDbService:
   def get_file_by_id(self, id):
     session = self._db.get_session()
     try:
-      files = session.query(Files).filter(Files.id == id)
-      file = files[0]
+      file = session.query(Files).filter(Files.id == id).first()
+
+      if not file:
+        raise 
+
       return file
+    except:
+      session.rollback()
+      raise InvariantError("file not found")
     finally:
       session.close()
 
@@ -35,21 +43,24 @@ class FilesDbService:
   def verify_file_by_id(self, id):
     session = self._db.get_session()
     try:
-      files = session.query(Files).filter(Files.id == id)
-      file = files[0]
-      return file
-    except Exception as e:
-      raise Exception(e)
+      files = session.query(Files).filter(Files.id == id).first()
+      if not files:
+        raise
+      return files
+    except:
+      raise NotFoundError("file not exist").throw()
     finally:
       session.close()
 
   def verify_file_by_id_name(self, id, name):
     session = self._db.get_session()
     try:
-      files = session.query(Files).filter(and_(Files.id == id, Files.custom_name == name))
-      return files[0]
-    except Exception as e:
-      raise Exception(e)
+      files = session.query(Files).filter(and_(Files.id == id, Files.custom_name == name)).first()
+      if not files:
+        raise
+      return files
+    except:
+      raise NotFoundError("file not exist").throw()
     finally:
       session.close()
   
@@ -59,6 +70,7 @@ class FilesDbService:
       files = session.query(Files).all()
       return files
     except Exception as e:
-      raise Exception(e)
+      session.rollback()
+      raise NotFoundError("error while get files").throw()
     finally:
       session.close()
