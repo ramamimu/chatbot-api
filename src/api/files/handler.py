@@ -37,7 +37,7 @@ class FilesHandler:
     self._files_db_service.add_file(name, file.filename, full_path)
     splitted_document = self._embedding_service.split_document(f"{full_path}/{file.filename}")
     embedded_document = self._embedding_service.embed_document(splitted_document)
-    self._embedding_service.save_embedded_document_to_local(embedded_document, full_path)
+    self._embedding_service.save_embed_to_local(embedded_document, full_path)
     self._vectorstore_service.add_vectostore(full_path)
     
     return {"status":"success"}

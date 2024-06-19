@@ -49,12 +49,13 @@ class Server:
     lorem_generator_service = LoremGeneratorService()
     file_storage_service = FileStorageService()
     files_db_service = FilesDbService(db)
-    embedding_service = EmbeddingService(embedding_model)
+    embedding_service = EmbeddingService(embedding_model, files_db_service)
     vectorstore_service = VectorstoreService(embedding_model, files_db_service)
     chain_service = ChainService(files_db_service, vectorstore_service)
     memorystore_service = MemorystoreService()
 
     # service builder
+    embedding_service.load_preprocessing_file()
     vectorstore_service.load_all_local_embedding()
 
     # routes initiation
