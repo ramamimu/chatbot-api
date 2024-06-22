@@ -2,7 +2,6 @@ from typing import List
 from fastapi import File, UploadFile, Form
 from fastapi.responses import FileResponse
 
-from src.commons.entities.files_db_entity import files_db_entity
 from src.commons.types.files_api_handler_type import DeleteFileKnowledgeType
 
 class FilesHandler:
@@ -72,7 +71,7 @@ class FilesHandler:
     files = self._files_db_service.get_all_files()
     return {
       "status": "success",
-      "files": files_db_entity(files)
+      "files": self._file_utils.files_db_entity(files)
     }
 
   async def get_files_download_by_id_handler(self, file_id):

@@ -6,7 +6,7 @@ from langchain_core.messages import HumanMessage
 
 import os
 
-from config import TEXT_GENERATION_MODEL, BASE_KNOWLEDGE_DOCUMENT_PATH
+from config import TEXT_GENERATION_MODEL
 
 class ChainService:
   def __init__(self, files_db_service, vectorstore_service) -> None:
@@ -19,10 +19,10 @@ class ChainService:
     '''
     system_msg = (
       "Anda adalah chatbot interaktif bernama Tanyabot.\n"
-      "Ikuti instruksi ini untuk menjawab pertanyaan/question: jawablah pertanyaan/question dari context yang telah diberikan. Berikan jawaban yang relevan dan ika Anda tidak berhasil mendapatkan jawabannya, katakan 'saya tidak tahu'.\n"
+      "Ikuti instruksi ini untuk menjawab pertanyaan/question: jawablah pertanyaan/question dari context yang telah diberikan. Berikan jawaban yang relevan, jika Anda tidak berhasil mendapatkan jawaban, katakan 'saya tidak tahu'.\n"
     )
-    
-    system_msg = (system_msg + "Ubah struktur kalimat menjadi HTML tapi hanya gunakan tag <ul> <ol> <li> <p> <br> <h2> <h3> <b> <strong>.\n") if is_output_html else ""
+
+    system_msg = f"{system_msg} Ubah struktur kalimat menjadi HTML tapi hanya gunakan tag <ul> <ol> <li> <p> <br> <h2> <h3> <b> <strong>.\n" if is_output_html else system_msg
     prompt = ChatPromptTemplate.from_messages(
       [
         (
@@ -55,6 +55,7 @@ class ChainService:
 
   def get_context(self, question, memorystore):
     context = self._vectorstore_service.similarity_search(question)
+    print("=============>>>>>>> ",context)
     return {
       "context": [HumanMessage(content=self._format_docs(context))],
       "messages": memorystore.messages

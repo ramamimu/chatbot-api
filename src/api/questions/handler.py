@@ -35,7 +35,6 @@ class QuestionsHandler:
     self._memorystore_service.add_user_message(payload.id, payload.question)
     memorystore = self._memorystore_service.get_memory(payload.id)
     context = self._chain_service.get_context(payload.question, memorystore)
-    print(context)
     answer = self._chain_service.get_chain(is_stream=False, is_output_html=False).invoke(context)
     self._memorystore_service.add_ai_message(payload.id, answer)
     return answer

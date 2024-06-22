@@ -9,9 +9,10 @@ class VectorstoreService:
     self._embedding_model = embedding_model
     self._vectorstore = FAISS.load_local(folder_path=f"{BASE_KNOWLEDGE_DOCUMENT_PATH}/embedding", embeddings=self._embedding_model, allow_dangerous_deserialization=True)
     self._files_db_service = files_db_service
+    self._k = 5
 
   def get_retriever(self):
-    retriever = self._vectorstore.as_retriever(search_kwargs={"k": 3})
+    retriever = self._vectorstore.as_retriever(search_kwargs={"k": self._k})
     if retriever is None:
         raise ValueError("Vectorstore as retriever returned None, expected a valid retriever.")
     return retriever
@@ -33,10 +34,11 @@ class VectorstoreService:
       local_vectorstore = FAISS.load_local(folder_path=embedding_path, embeddings=self._embedding_model, allow_dangerous_deserialization=True)
       self._vectorstore.merge_from(local_vectorstore)
     else:
-      self._files_db_service.delete_file_by_id(path)
+      print(f"deleting {path} in db due to path not exist")
+      self._files_db_service.delete_file_by_path(path)
   
   def similarity_search(self, question):
-    ss = self._vectorstore.similarity_search(question, k=3)
+    ss = self._vectorstore.similarity_search(question, k=self._k)
     return ss
   
   def get_chunks_by_filename(self, filename: str):

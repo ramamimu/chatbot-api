@@ -2,39 +2,17 @@ import os
 
 from huggingface_hub import snapshot_download, login
 from dotenv import load_dotenv
-from config import PREFIX_DIR_MODEL
+from config import EMBED_MODEL_PATH, EMBED_MODEL_NAME
 
 load_dotenv()
 login(os.getenv("HUGGINGFACEHUB_API_TOKEN"))
 
-prefix_dir = PREFIX_DIR_MODEL
-
 models = {
-  "indo_sentence": {
-    "repo_id": "firqaaa/indo-sentence-bert-base",
-    "local_dir": f"{prefix_dir}/indo-sentence-bert-base"
-  },
-  "gpt2": {
-    "repo_id": "openai-community/gpt2",
-    "local_dir": f"{prefix_dir}/gpt2"
-  },
-  "komodo": {
-    "repo_id": "Yellow-AI-NLP/komodo-7b-base",
-    "local_dir": f"{prefix_dir}/komodo"
-  },
-  "mistral": {
-    "repo_id": "TheBloke/Mistral-7B-Instruct-v0.1-GPTQ",
-    "local_dir": f"{prefix_dir}/mistral"
-  },
-  "llama2": {
-    "repo_id": "meta-llama/Llama-2-7b-chat-hf",
-    "local_dir": f"{prefix_dir}/llama2"
-  },
-  "sealion": {
-    "repo_id": "aisingapore/sea-lion-7b-instruct",
-    "local_dir": f"{prefix_dir}/sealion"
-  }
+  "indo_sentence": "firqaaa/indo-sentence-bert-base",
+  "finetuning-e5-small": "ramamimu/finetuning-MiniLM-L12-v2",
+  "multilingual-e5-small": "intfloat/multilingual-e5-small",
 }
 
-snapshot_download(repo_id=models["indo_sentence"]["repo_id"],
-                   local_dir=models["indo_sentence"]["local_dir"])
+print(f"============ downloading {EMBED_MODEL_NAME}(============")
+snapshot_download(repo_id=models[EMBED_MODEL_NAME],
+                   local_dir=EMBED_MODEL_PATH)

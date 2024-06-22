@@ -5,6 +5,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 
 from config import EMBED_MODEL_PATH, BASE_KNOWLEDGE_DOCUMENT_PATH, BASE_KNOWLEDGE_DOCUMENT_NAME
 
+print(f"========= START EMBED {EMBED_MODEL_PATH} =========")
 # load the readable document
 doc = PyPDFLoader(f"{BASE_KNOWLEDGE_DOCUMENT_PATH}/{BASE_KNOWLEDGE_DOCUMENT_NAME}").load()
 
@@ -22,3 +23,4 @@ embedded_doc = FAISS.from_documents(splitted_doc, embedding_model)
 
 # save embedded doc into local directory
 embedded_doc.save_local(folder_path=f"{BASE_KNOWLEDGE_DOCUMENT_PATH}/embedding")
+print(f"========= FINISH EMBED {EMBED_MODEL_PATH} =========")
