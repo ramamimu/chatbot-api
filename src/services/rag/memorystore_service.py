@@ -7,8 +7,12 @@ class MemorystoreService:
 
   def create_new_memory(self, id: str):
     self._memorystore[id] = ChatMessageHistory()
+    self.add_user_message(id, "hi!")
+    self.add_ai_message(id, "halo, Tanyabot siap membantu Anda :D!")
+    self.add_user_message(id, "halo!")
+    self.add_ai_message(id, "hi, Tanyabot siap membantu Anda :D!")
 
-  def get_all_memory(self,):
+  def get_all_memory(self):
     return self._memorystore
 
   def get_memory(self, id: str):
