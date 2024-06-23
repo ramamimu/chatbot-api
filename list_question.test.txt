@@ -1,0 +1,8 @@
+question: "Siapakah Anda?"
+answer: "Saya adalah chatbot interaktif bernama Tanyabot yang siap membantu Anda menjawab pertanyaan seputar Akademik Departemen Teknik Informatika ITS."
+
+question: "Bagaimana cara mendaftar proposal TA?"
+answer: "Langkah awal sebelum mendaftarkan proposal TA ke sistem MONTA, mahasiswa wajib berdiskusi terlebih dahulu dengan calon dosen pembimbing perihal topik TA yang ingin dikerjakan. Setelah topik dan draft proposal TA sudah disetujui, mahasiswa dapat melakukan pendaftaran proposal TA ke sistem dengan langkah-langkah berikut:\n1. Pilih menu Proposal TA –> Buat Proposal pada sistem MONTA.\n2. Unggah file draft proposal yang sudah disepakati dengan pembimbing.\n3. Isi semua isian form yang diperlukan.\n4. Terakhir, pilih tombol \"Buat Proposal Baru\" untuk menyelesaikan proses pendaftaran proposal TA.\n\nSetelah langkah-langkah di atas dilakukan dengan benar, mahasiswa dapat mencetak cover proposal TA dengan memilih menu Cetak Cover –> Cetak Cover Proposal TA. Selanjutnya, mahasiswa wajib menyerahkan hardcopy proposal TA lengkap dengan cover proposal yang sudah disetujui oleh dosen pembimbing kepada koordinator TA/Ketua RMK."
+
+question: "Berapa lama durasi KP?"
+answer: ""Lama Kerja Praktek (KP) di Departemen Teknik Informatika ITS adalah 1-2 bulan dengan hitungan kerja part time.""
