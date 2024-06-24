@@ -52,6 +52,8 @@
   python3 embed.init.py
   ```
 
+- Configure preprocessing file as mention at <a href="#how-to-add-preprocessing-file">preprocessing section</a> (optional)
+
 - run the app
 
   for development
@@ -70,7 +72,9 @@
 
 1. create .env such example.env file
 
-2. run dockercompose command
+2. Configure preprocessing file as mention at <a href="#how-to-add-preprocessing-file">preprocessing section</a> (optional)
+
+3. run docker compose command
 
 ```
 docker compose build --no-cache
@@ -90,7 +94,7 @@ exposing `port 5001` as default
 
 you need to configure of three things:
 
-1. create folder name in following rule `documents/preprocessing-<your custom name>`
+1. create folder name by following rule `documents/preprocessing-<your custom name>`
 
 2. provide `.pdf` file in your directory as downloadable file later on
 
@@ -101,7 +105,3 @@ the program will automatically recognize as preprocessing stuff and will be load
 ## documentation
 
 Documentation able to see on `url/docs`. It is generated automatically by fastapi. It also provides API playground.
-
-## useful link references
-
-- stream communication: https://github.com/sysid/sse-starlette
