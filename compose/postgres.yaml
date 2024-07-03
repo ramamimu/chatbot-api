@@ -3,15 +3,16 @@ version: "1.0"
 services:
   postgres:
     container_name: postgres_chatbot
-    image: postgres:9.6
+    image: postgres:16.3
     ports:
       - "5435:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: chatbot
+    restart: on-failure
     volumes:
-      - postgres-chatbot:/var/lib/postgresql/data
+      - postgres-chatbot-new:/var/lib/postgresql/data
 
 volumes:
-  postgres-chatbot:
+  postgres-chatbot-new:
