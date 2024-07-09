@@ -16,6 +16,11 @@ def routes(handler) -> HandlerRequestType:
       handler=handler.get_files_handler
     ),
     HandlerRequestType(
+      method=Method.GET.value,
+      path="/files/{page}",
+      handler=handler.get_paginated_files_handler
+    ),
+    HandlerRequestType(
       method=Method.DELETE.value,
       path="/files",
       handler=handler.delete_file_knowledge_handler

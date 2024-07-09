@@ -74,6 +74,14 @@ class FilesHandler:
       "files": self._file_utils.files_db_entity(files)
     }
 
+  async def get_paginated_files_handler(self, page: int):
+    files = self._files_db_service.get_file_by_offset(page)
+    return {
+      "status": "success",
+      "maxPage": self._files_db_service.get_max_page(),
+      "files": self._file_utils.files_db_entity(files)
+    }
+
   async def get_files_download_by_id_handler(self, file_id):
     '''
     1. verify id in db return file if available

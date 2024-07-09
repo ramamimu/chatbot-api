@@ -1,11 +1,14 @@
-from src.services.postgres.models.tables import Files
 from sqlalchemy.sql import and_
+import math
+
+from src.services.postgres.models.tables import Files
 from src.exceptions.invariant_error import InvariantError
 from src.exceptions.not_found_error import NotFoundError
 
 class FilesDbService:
   def __init__(self, db) -> None:
     self._db = db
+    self._limit = 10
 
   def add_file(self, custom_name, file_name, path):
     new_file = Files(custom_name=custom_name, file_name=file_name, path=path)
@@ -15,6 +18,23 @@ class FilesDbService:
     session = self._db.get_session()
     try:
       files = session.query(Files).all()
+      return files
+    finally:
+      session.close()
+  
+  def get_max_page(self):
+    session = self._db.get_session()
+    try:
+      files = session.query(Files).count()
+      return math.ceil(files/self._limit)
+    finally:
+      session.close()
+
+  def get_file_by_offset(self, offset):
+    print(offset * self._limit)
+    session = self._db.get_session()
+    try:
+      files = session.query(Files).limit(self._limit).offset((offset - 1) * self._limit).all()
       return files
     finally:
       session.close()

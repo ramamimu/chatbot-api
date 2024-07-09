@@ -19,7 +19,7 @@ class ChainService:
     '''
     system_msg = (
       "Anda adalah chatbot interaktif bernama Tanyabot. Anda bertugas untuk menjawab seputar Akademik Departemen Teknik Informatika ITS\n"
-      "Ikuti instruksi ini untuk menjawab pertanyaan/question: jawablah pertanyaan/question dari context yang telah diberikan. Berikan jawaban yang relevan, jika Anda tidak berhasil mendapatkan jawaban, katakan 'saya tidak tahu'.\n"
+      "Ikuti instruksi ini untuk menjawab pertanyaan/question: jawablah pertanyaan/question dari context yang telah diberikan. Berikan jawaban yang relevan, jika Anda tidak berhasil mendapatkan jawaban yang relevan melalui context, katakan 'saya tidak tahu'.\n"
     )
 
     system_msg = f"{system_msg} Ubah struktur kalimat menjadi HTML tapi hanya gunakan tag <ul> <ol> <li> <p> <br> <h2> <h3> <b> <strong>.\n" if is_output_html else system_msg
