@@ -1,0 +1,31 @@
+name: Continue Deployment
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Build And Run
+    runs-on: ubuntu-latest
+    steps:
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.PK_VM }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd app
+            sudo rm -rf chatbot-api
+            ls
+            git clone https://github.com/ramamimu/chatbot-api.git
+            ls
+            cd chatbot-api
+            cp -r ../chatbot-env/documents/* ./documents/
+            cp ../chatbot-env/.env .env
+            docker compose build --no-cache
+            docker compose up -d

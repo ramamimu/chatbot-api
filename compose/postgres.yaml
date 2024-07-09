@@ -1,5 +1,3 @@
-version: "1.0"
-
 services:
   postgres:
     container_name: postgres_chatbot
