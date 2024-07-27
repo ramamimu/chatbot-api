@@ -9,7 +9,7 @@ class VectorstoreService:
     self._embedding_model = embedding_model
     self._vectorstore = FAISS.load_local(folder_path=f"{BASE_KNOWLEDGE_DOCUMENT_PATH}/embedding", embeddings=self._embedding_model, allow_dangerous_deserialization=True)
     self._files_db_service = files_db_service
-    self._k = 5
+    self._k = 8
 
   def get_retriever(self):
     retriever = self._vectorstore.as_retriever(search_kwargs={"k": self._k})

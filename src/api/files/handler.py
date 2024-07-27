@@ -5,12 +5,13 @@ from fastapi.responses import FileResponse
 from src.commons.types.files_api_handler_type import DeleteFileKnowledgeType
 
 class FilesHandler:
-  def __init__(self, file_utils, file_storage_service, files_db_service, embedding_service, vectorstore_service):
+  def __init__(self, file_utils, file_storage_service, files_db_service, embedding_service, vectorstore_service, memorystore_service):
     self._file_utils = file_utils
     self._file_storage_service = file_storage_service
     self._files_db_service = files_db_service
     self._embedding_service = embedding_service
     self._vectorstore_service = vectorstore_service
+    self._memorystore_service = memorystore_service
 
   async def put_embed_files_handler(self, name: str = Form(...), file: UploadFile = File(...)):
     '''
@@ -54,6 +55,8 @@ class FilesHandler:
     4. delete file by id in database
 
     5. delete file in directory
+
+    6. reset all history
     '''
     
     file = self._files_db_service.verify_file_by_id_name(payload.id, payload.name)
@@ -61,6 +64,7 @@ class FilesHandler:
     self._vectorstore_service.delete_document_by_chunks(chunks)
     self._files_db_service.delete_file_by_id(file.id)
     self._file_storage_service.delete_directory(file.path)
+    self._memorystore_service.delete_all_memory()
 
     return {
       "status": "success",

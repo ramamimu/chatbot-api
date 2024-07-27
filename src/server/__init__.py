@@ -63,7 +63,7 @@ class Server:
     endpoint_factory = EndpointFactory(self._app)
     endpoint_factory.routes_creator(health_check_endpoint.register())
     endpoint_factory.routes_creator(questions_endpoint.register(lorem_generator_service, chain_service, vectorstore_service, memorystore_service))
-    endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service, embedding_service, vectorstore_service))
+    endpoint_factory.routes_creator(files_endpoint.register(file_storage_service, files_db_service, embedding_service, vectorstore_service, memorystore_service))
     endpoint_factory.routes_creator(histories_endpoint.register(memorystore_service))
 
   def run(self):
